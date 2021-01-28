@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bouncing Ball</title><style>
+    canvas { background: #eee; }
+</style>
+</head>
+<body onload="docevent()" >
+<center><h1>Bouncing Ball</h1>
+<canvas id="myCanvas" width="480" height="320"></canvas><center>
+
+</body>
+<script>
+    let canvas = document.getElementById("myCanvas");
+    var score = 0;
+    let ctx = canvas.getContext("2d");
+    let Ball = function () {
+        this.posX = canvas.width/2;
+        this.posY = canvas.height-40;
+        this.Radius = 10;
+        this.dx = 1;
+        this.dy = 1;
+
+        this.drawBall = function () {
+            ctx.beginPath();
+            ctx.arc(this.posX, this.posY,this.Radius, 0, Math.PI * 2);
+            ctx.fillStyle = "#003"
+            ctx.fill();
+            ctx.closePath()
+            this.posX += this.dx;
+            this.posY += this.dy;
+        }
+        this.checkCollision = function (){
+            if(this.posX + this.dx > canvas.width-this.Radius || this.posX + this.dx < this.Radius) {
+                this.dx = -this.dx;
+            }
+            if( this.posY + this.dy < this.Radius) {
+                this.dy = -this.dy;
+            } else if (this.posY+this.dy>canvas.height){
+                if (this.posX>bar.posX&&this.posX<bar.posX+bar.barwidth){
+                    this.dy = -this.dy;
+                    this.dy = -Math.random()*2
+
+                    score++;
+                }
+
+            else
+            {
+                alert("Game Over");
+                alert("So Diem cua ban la " + score)
+                document.location.reload();
+                clearInterval(interval)
+
+            }}
+        }
+
+
+    }
+    let Bar = function (){
+        this.barHeight = 10;
+        this.barwidth = 75;
+        this.posX = (canvas.width)/2;
+        this.posY = canvas.height-this.barHeight;
+        this.speed = 30;
+        this.drawBar = function (){
+            ctx.beginPath();
+            ctx.rect(this.posX,this.posY,this.barwidth,this.barHeight);
+            ctx.fillStyle ="#009"
+            ctx.fill();
+            ctx.closePath();
+        }
+        this.moveRight = function (){
+            this.posX += this.speed;
+            if (this.posX+this.barwidth>canvas.width){
+                this.posX= canvas.width -this.barwidth
+            }
+        }
+        this.moveLeft = function (){
+            this.posX -= this.speed;
+            if (this.posX<0){
+                this.posX = 0;
+            }
+
+        }
+    }
+    let ball = new Ball();
+    let bar = new Bar();
+    function drawScore() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText("Score: "+score, 8, 20);
+    }
+
+    function draw (){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ball.drawBall();
+        ball.checkCollision();
+        bar.drawBar();
+        drawScore();
+    }
+    const LEFT_MOVE = 37;
+    const RIGHT_MOVE = 39;
+    function docevent (){
+        window.addEventListener("keydown",moveBar)
+    }
+    function moveBar(evt){
+        switch (evt.keyCode) {
+            case LEFT_MOVE :
+                bar.moveLeft();
+                bar.drawBar()
+                break;
+            case RIGHT_MOVE :
+                bar.moveRight();
+                bar.drawBar();
+                break;
+        }
+
+    }
+
+        let interval = setInterval(draw, 10)
+
+</script>
+</html>
